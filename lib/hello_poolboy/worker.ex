@@ -15,6 +15,7 @@ defmodule HelloPoolboy.Worker do
 
   def handle_call({:print_to_pdf, i}, _from, state) do
     IO.puts("process #{inspect(self())} printing number #{i}")
+    Process.sleep(6000)
 
     :ok =
       ChromicPDF.print_to_pdf({:url, "https://example.net"}, output: "output/example_#{i}.pdf")
