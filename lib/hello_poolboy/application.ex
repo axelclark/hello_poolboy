@@ -8,7 +8,8 @@ defmodule HelloPoolboy.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      :poolboy.child_spec(:worker, poolboy_config())
+      :poolboy.child_spec(:worker, poolboy_config()),
+      ChromicPDF
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

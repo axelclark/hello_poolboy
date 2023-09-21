@@ -9,13 +9,16 @@ defmodule HelloPoolboy.Worker do
     {:ok, nil}
   end
 
-  def square_root(pid, number) do
-    GenServer.call(pid, {:square_root, number})
+  def print_to_pdf(pid, number) do
+    GenServer.call(pid, {:print_to_pdf, number})
   end
 
-  def handle_call({:square_root, x}, _from, state) do
-    IO.puts("process #{inspect(self())} calculating square root of #{x}")
-    Process.sleep(1000)
-    {:reply, :math.sqrt(x), state}
+  def handle_call({:print_to_pdf, i}, _from, state) do
+    IO.puts("process #{inspect(self())} printing number #{i}")
+
+    :ok =
+      ChromicPDF.print_to_pdf({:url, "https://example.net"}, output: "output/example_#{i}.pdf")
+
+    {:reply, :ok, state}
   end
 end
