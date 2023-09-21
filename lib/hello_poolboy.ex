@@ -1,5 +1,5 @@
 defmodule HelloPoolboy do
-  @timeout 1000
+  @timeout 60000
 
   def start_pdf() do
     1..200
@@ -40,6 +40,22 @@ defmodule HelloPoolboy do
         end,
         @timeout
       )
+    end)
+  end
+
+  def start_pdf_with_opq() do
+    1..200
+    |> Enum.map(fn i -> async_call_print_pdf_opq(i) end)
+    |> Enum.each(fn task -> await_and_inspect(task) end)
+  end
+
+  defp async_call_print_pdf_opq(i) do
+    Task.async(fn ->
+      OPQ.enqueue(:pdf, fn ->
+        # Prints a local HTML file to PDF.
+        IO.puts("process #{inspect(self())} printing number #{i}")
+        ChromicPDF.print_to_pdf({:url, "https://example.net"}, output: "output/example_#{i}.pdf")
+      end)
     end)
   end
 end

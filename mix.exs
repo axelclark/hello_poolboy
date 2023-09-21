@@ -21,6 +21,10 @@ defmodule HelloPoolboy.MixProject do
 
   # Run "mix help deps" to learn about dependencies.
   defp deps do
-    [{:poolboy, "~> 1.5.1"}, {:chromic_pdf, "~> 1.13"}]
+    [
+      {:poolboy, "~> 1.5.1"},
+      {:chromic_pdf, "~> 1.13"},
+      {:opq, "~> 4.0"}
+    ]
   end
 end

@@ -9,7 +9,8 @@ defmodule HelloPoolboy.Application do
   def start(_type, _args) do
     children = [
       :poolboy.child_spec(:worker, poolboy_config()),
-      ChromicPDF
+      ChromicPDF,
+      {OPQ, opq_config()}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
@@ -18,12 +19,16 @@ defmodule HelloPoolboy.Application do
     Supervisor.start_link(children, opts)
   end
 
-  defp poolboy_config do
+  defp poolboy_config() do
     [
       name: {:local, :worker},
       worker_module: HelloPoolboy.Worker,
       size: 3,
       max_overflow: 0
     ]
+  end
+
+  defp opq_config() do
+    [name: :pdf, workers: 3, timeout: 1000]
   end
 end
