@@ -1,0 +1,21 @@
+# Hello Poolboy LiveBook
+
+```elixir
+my_app_root = Path.join(__DIR__, "..")
+
+Mix.install(
+  [
+    {:hello_poolboy, path: my_app_root, env: :dev},
+    {:kino, "~> 0.10.0"}
+  ],
+  lockfile: Path.join(my_app_root, "mix.lock")
+)
+```
+
+## Section
+
+```elixir
+Kino.Process.render_seq_trace(fn ->
+  HelloPoolboy.single_pdf_with_poolboy()
+end)
+```
