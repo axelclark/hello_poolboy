@@ -9,7 +9,7 @@ defmodule HelloPoolboy.Application do
   def start(_type, _args) do
     children = [
       :poolboy.child_spec(:worker, poolboy_config()),
-      ChromicPDF,
+      {ChromicPDF, chromic_pdf_opts()},
       {OPQ, opq_config()}
     ]
 
@@ -26,6 +26,10 @@ defmodule HelloPoolboy.Application do
       size: 3,
       max_overflow: 0
     ]
+  end
+
+  defp chromic_pdf_opts() do
+    [session_pool: [timeout: 30_000]]
   end
 
   defp opq_config() do
