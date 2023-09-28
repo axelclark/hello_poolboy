@@ -23,7 +23,7 @@ defmodule HelloPoolboy.MixProject do
   defp deps do
     [
       {:poolboy, "~> 1.5.1"},
-      {:chromic_pdf, "~> 1.13"},
+      {:chromic_pdf, "~> 1.14"},
       {:opq, "~> 4.0"}
     ]
   end

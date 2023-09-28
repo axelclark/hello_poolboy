@@ -96,6 +96,7 @@ defmodule HelloPoolboy do
         IO.puts("process #{inspect(self())} printing number #{i}")
         ChromicPDF.print_to_pdf({:url, "https://example.net"}, output: "output/example_#{i}.pdf")
       end)
+      |> IO.inspect(label: "OPQ enqueue")
     end)
   end
 end
