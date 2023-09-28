@@ -29,7 +29,7 @@ defmodule HelloPoolboy.Application do
   end
 
   defp chromic_pdf_opts() do
-    [session_pool: [timeout: 5000, checkout_timeout: 30_000]]
+    [session_pool: [timeout: 5000, checkout_timeout: 20_000]]
   end
 
   defp opq_config() do

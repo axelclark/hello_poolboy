@@ -1,5 +1,6 @@
 defmodule HelloPoolboy do
-  @timeout 30000
+  @poolboy_timeout 30000
+  @task_await_timeout 30000
 
   def start_pdf() do
     1..200
@@ -9,12 +10,18 @@ defmodule HelloPoolboy do
 
   def async_call_print_pdf(i) do
     Task.async(fn ->
+      IO.inspect("process #{inspect(self())} printing number #{i}")
       # Prints a local HTML file to PDF.
-      ChromicPDF.print_to_pdf({:url, "https://example.net"}, output: "output/example_#{i}.pdf")
+      try do
+        ChromicPDF.print_to_pdf({:url, "https://example.net"}, output: "output/example_#{i}.pdf")
+      catch
+        :error, %ChromicPDF.Browser.ExecutionError{} ->
+          {:error, :timeout}
+      end
     end)
   end
 
-  defp await_and_inspect(task), do: task |> Task.await(@timeout) |> IO.inspect()
+  defp await_and_inspect(task), do: task |> Task.await(@task_await_timeout) |> IO.inspect()
 
   def start_pdf_with_poolboy() do
     IO.inspect("caller pid: #{inspect(self())}")
@@ -45,7 +52,7 @@ defmodule HelloPoolboy do
                 {:error, :worker_timeout}
             end
           end,
-          @timeout
+          @poolboy_timeout
         )
       catch
         :exit, {:timeout, _} ->
@@ -79,7 +86,7 @@ defmodule HelloPoolboy do
             #   :ok
         end
       end,
-      @timeout
+      @poolboy_timeout
     )
   end
 
